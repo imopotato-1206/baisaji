@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>レシピ調味料計算機</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  
+    <link rel="stylesheet" href="style.css"> 
+  
+</head>
+<body>
+  <div class="aspect-ratio-container">
+    <img src="header.png" alt="ヘッダー画像" class="w-full h-auto mb-4 rounded-lg">
+
+    <div class="flex gap-2 mb-4">
+      <button class="tab-btn active" id="btn-calc" onclick="showSection('calc')">計算機</button>
+      <button class="tab-btn" id="btn-usage" onclick="showSection('usage')">使い方</button>
+      <button class="tab-btn" id="btn-history" onclick="showSection('history')">履歴</button>
+    </div>
+
+    <div id="section-calc">
+      <div class="mb-4 bg-gray-50 p-3 rounded-lg">
+        <h2 class="text-sm mb-2 text-gray-700">何人前にしますか？</h2>
+        <div class="flex flex-wrap gap-2 mb-2">
+          <button type="button" class="btn" onclick="setMultiplier(0.5, this)">1/2 (×0.5)</button>
+          <button type="button" class="btn" onclick="setMultiplier(0.333, this)">1/3 (×0.33)</button>
+        </div>
+        <div class="flex flex-wrap gap-2 mb-3">
+          <button type="button" class="btn" onclick="setMultiplier(0.25, this)">1/4 (×0.25)</button>
+          <div class="flex items-center gap-1">
+            <span class="text-sm">1/</span>
+            <input type="number" id="input-fraction" class="custom-input input-text-size w-12" min="1">
+            <button type="button" class="btn-person" onclick="applyFraction(this)">人前</button>
+          </div>
+        </div>
+        <hr class="border-t border-gray-300 my-2">
+        <div class="flex flex-wrap gap-2 mb-2">
+          <button type="button" class="btn" onclick="setMultiplier(2, this)">2人前 (×2)</button>
+          <button type="button" class="btn" onclick="setMultiplier(3, this)">3人前 (×3)</button>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="btn" onclick="setMultiplier(4, this)">4人前 (×4)</button>
+          <div class="flex items-center gap-1">
+            <span class="w-4"></span>
+            <input type="number" id="input-multiplier" class="custom-input input-text-size w-12" min="1">
+            <button type="button" class="btn-person" onclick="applyMultiplier(this)">人前</button>
+          </div>
+        </div>
+        <p class="mt-2 text-xs text-gray-500">倍率: <span id="current-multiplier-display" class="text-green-600">1</span></p>
+      </div>
+
+      <div class="bg-gray-50 p-3 rounded-lg">
+        <h2 class="text-sm mb-2 text-gray-700">調味料リスト</h2>
+        <div id="ingredients-container">
+          <div class="tb-set" id="tb_set_1">
+            <span class="text-gray-500 w-10 text-xs">1つ目</span>
+            <input type="text" id="tb1_1" class="custom-input input-text-size w-[110px]" placeholder="材料名">
+            <input type="text" id="tb2_1" class="custom-input input-text-size w-[100px]" placeholder="大/小 or 数値">
+            <input type="text" id="tb3_1" class="custom-input input-text-size w-[100px]" placeholder="数値 or mL">
+            <button type="button" class="btn btn-remove invisible">削除</button>
+          </div>
+        </div>
+        <button type="button" class="btn mt-2 text-xs bg-blue-500 text-white w-[120px] h-[50px]" onclick="addIngredientRow()">+ 追加</button>
+      </div>
+
+      <button type="button" class="btn-primary" onclick="calculate()">計算開始</button>
+
+      <div id="result-area" class="mt-4 bg-white p-3 rounded-lg border hidden">
+        <h2 class="text-sm border-b mb-2">結果 (<span id="result-multiplier-display"></span>人前)</h2>
+        <ul id="result-list" class="text-xs list-disc pl-4"></ul>
+      </div>
+    </div>
+
+    <div id="section-usage" class="hidden">
+      <h2 class="text-sm font-bold mb-2 text-gray-700">使い方</h2>
+      <p class="text-xs text-gray-600 leading-relaxed">
+        1. 何倍にしたいか選ぶ。(例：「1人前➡3人前」なら「3人前(×3)」「2人前➡1人前」なら「1/2(×0.5)」)<br>
+        2. 調味料リストに材料名、単位（大さじ/小さじ）、数値を入力する。(※15ml等の表記なら、材料名、数値、単位(ml)を入力する。)<br>
+        3. 「計算開始」ボタンを押すと、自動的に変換された数値が表示されます。<br>
+        4. 結果は自動的に「履歴」ページに保存されます。
+      </p>
+    </div>
+
+    <div id="section-history" class="hidden">
+      <h2 class="text-sm font-bold mb-2 text-gray-700">計算履歴</h2>
+      <div id="history-controls" class="mb-4"></div>
+      <div id="history-list" class="text-xs space-y-4"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
