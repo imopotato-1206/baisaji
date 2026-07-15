@@ -27,18 +27,25 @@ body {
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 16px;
+  padding: 12px;
 }
 
 .input-text-size {
   font-size: 0.5em;
 }
 
+/* 〇つ目と入力欄を改行するために flex-wrap を追加 */
 .tb-set {
   display: flex;
+  flex-wrap: wrap; 
   align-items: center;
   gap: 4px;
   margin-bottom: 8px;
+}
+
+/* 〇つ目をフル幅にする */
+.tb-set > span {
+  width: 100%;
 }
 
 .custom-input {
@@ -88,7 +95,7 @@ body {
   color: white;
   padding: 4px 6px;
   font-size: 0.5em;
-  width: 25px;
+  width: 50px;
 }
 
 .tab-btn { padding: 8px; font-size: 0.7em; background: #e0e0e0; border-radius: 6px; flex: 1; text-align: center; cursor: pointer; }

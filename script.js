@@ -52,10 +52,10 @@ function loadHistory() {
   history.forEach((h, index) => {
     const div = document.createElement('div');
     div.className = 'border-b pb-2 relative';
-    let itemsHtml = h.items.map(i => `<li>${i.original} → ${i.result}</li>`).join('');
+    let itemsHtml = h.items.map(i => `<li>${i.original} (×${h.multiplier}) → ${i.result}</li>`).join('');
     div.innerHTML = `
       <div class="flex justify-between items-center">
-        <p class="font-bold text-gray-700 text-[10px]">${h.date} (${h.multiplier}人前)</p>
+        <p class="font-bold text-gray-700 text-[10px]">${h.date} (倍率: ${h.multiplier}倍)</p>
         <button onclick="deleteEntry(${index})" class="text-[10px] text-red-500 border border-red-500 px-1 rounded">削除</button>
       </div>
       <ul class="list-disc pl-4">${itemsHtml}</ul>
@@ -143,15 +143,17 @@ function calculate() {
     const isOosaji = unit === '大さじ' || unit === '大';
     const isKosaji = unit === '小さじ' || unit === '小';
     
+    const namePart = name ? name + " : " : "";
+
     let display = '';
     if (isKosaji) {
         let da = totalNum / 3;
-        display = `${name ? name : "材料"} : 小さじ${toFraction(totalNum)}(大さじ${toFraction(da)})`;
+        display = `${namePart}小さじ${toFraction(totalNum)}(大さじ${toFraction(da)})`;
     } else if (isOosaji) {
         let ko = totalNum * 3;
-        display = `${name ? name : "材料"} : 大さじ${toFraction(totalNum)}(小さじ${toFraction(ko)})`;
+        display = `${namePart}大さじ${toFraction(totalNum)}(小さじ${toFraction(ko)})`;
     } else {
-        display = `${name ? name : "材料"} : ${toFraction(totalNum)}${unit}`;
+        display = `${namePart}${toFraction(totalNum)}${unit}`;
     }
     
     const li = document.createElement('li');
