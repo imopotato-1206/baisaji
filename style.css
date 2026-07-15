@@ -34,7 +34,6 @@ body {
   font-size: 0.5em;
 }
 
-/* 〇つ目と入力欄を改行するために flex-wrap を追加 */
 .tb-set {
   display: flex;
   flex-wrap: wrap; 
@@ -43,7 +42,6 @@ body {
   margin-bottom: 8px;
 }
 
-/* 〇つ目をフル幅にする */
 .tb-set > span {
   width: 100%;
 }

@@ -1,6 +1,14 @@
 let ingredientCount = 1;
 let currentMultiplier = 1;
 
+function renumberLabels() {
+  const rows = document.querySelectorAll('.tb-set');
+  rows.forEach((row, index) => {
+    const span = row.querySelector('span');
+    if(span) span.innerText = (index + 1) + "つ目";
+  });
+}
+
 function showSection(id) {
   document.getElementById('section-calc').classList.add('hidden');
   document.getElementById('section-usage').classList.add('hidden');
@@ -81,16 +89,21 @@ function addIngredientRow() {
   newRow.className = 'tb-set';
   newRow.id = `tb_set_${ingredientCount}`;
   newRow.innerHTML = `
-    <span class="text-gray-500 w-10 text-xs">${ingredientCount}つ目</span>
+    <span class="text-gray-500 w-10 text-xs">0つ目</span>
     <input type="text" id="tb1_${ingredientCount}" class="custom-input input-text-size w-[110px]" placeholder="材料名">
     <input type="text" id="tb2_${ingredientCount}" class="custom-input input-text-size w-[100px]" placeholder="大/小 or 数値">
     <input type="text" id="tb3_${ingredientCount}" class="custom-input input-text-size w-[100px]" placeholder="数値 or mL">
     <button type="button" class="btn btn-remove" onclick="removeRow(${ingredientCount})">削除</button>
   `;
   container.appendChild(newRow);
+  renumberLabels();
 }
 
-function removeRow(id) { const row = document.getElementById(`tb_set_${id}`); if(row) row.remove(); }
+function removeRow(id) { 
+  const row = document.getElementById(`tb_set_${id}`); 
+  if(row) row.remove(); 
+  renumberLabels();
+}
 
 function parseFraction(str) {
   if (!str) return NaN;
@@ -109,8 +122,8 @@ function parseFraction(str) {
 }
 
 function toFraction(num) {
-  const tolerance = 0.05;
-  const fractions = [{n: 1/2, s: "1/2"}, {n: 1/3, s: "1/3"}, {n: 2/3, s: "2/3"}, {n: 1/4, s: "1/4"}, {n: 3/4, s: "3/4"}, {n: 1/6, s: "1/6"}, {n: 5/6, s: "5/6"}, {n: 1/8, s: "1/8"}, {n: 3/8, s: "3/8"}, {n: 5/8, s: "5/8"}, {n: 7/8, s: "7/8"}];
+  const tolerance = 0.02;
+  const fractions = [{n: 1/2, s: "1/2"}, {n: 1/3, s: "1/3"}, {n: 2/3, s: "2/3"}, {n: 1/4, s: "1/4"}, {n: 1/5, s: "1/5"}, {n: 1/6, s: "1/6"}, {n: 1/8, s: "1/8"}, {n: 3/4, s: "3/4"}, {n: 3/8, s: "3/8"}, {n: 5/6, s: "5/6"}, {n: 5/8, s: "5/8"}, {n: 7/8, s: "7/8"}];
   const integer = Math.floor(num);
   const frac = num - integer;
   if (frac < tolerance) return `${integer > 0 ? integer : (num === 0 ? "0" : "")}`;
@@ -129,7 +142,9 @@ function calculate() {
   for (let i = 1; i <= 100; i++) {
     const row = document.getElementById(`tb_set_${i}`); 
     if (!row) continue;
-    const name = document.getElementById(`tb1_${i}`).value.trim();
+    const nameInput = document.getElementById(`tb1_${i}`);
+    if (!nameInput) continue;
+    const name = nameInput.value.trim();
     const v1 = document.getElementById(`tb2_${i}`).value.trim();
     const v2 = document.getElementById(`tb3_${i}`).value.trim();
     if(!v1 && !v2) continue;
